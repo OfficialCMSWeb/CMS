@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMS - Academic Calendar 2026-2027</title>
+
+    <!-- Font Awesome CDN --> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">   
+
+    <!-- Link to external CSS --> 
+    <link rel="stylesheet" href="reg.css">
+
+    <style>
+        /* Logo Styles */
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: #000000;
+            transition: opacity 0.2s ease;
+        }
+
+        .logo-img {
+            height: 48px;
+            width: auto;
+            object-fit: contain;
+            display: block;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            line-height: 1;
+            white-space: nowrap;
+        }
+
+        .logo:hover {
+            opacity: 0.85;
+        }
+
+        /* Calendar Section Layout */
+        .calendar-section {
+            padding: 40px 0 80px 0;
+        }
+
+        .calendar-card {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #ffffff;
+            border: 2px solid rgb(43, 154, 245);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+            color: #000000;
+        }
+
+        .calendar-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .calendar-header h2 {
+            font-size: 1.8rem;
+            color: #000000;
+            margin-bottom: 8px;
+        }
+
+        .calendar-header h2 i {
+            color: rgb(43, 154, 245);
+            margin-right: 10px;
+        }
+
+        /* Navigation & Controls */
+        .calendar-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .month-nav-btn {
+            background: #ffffff;
+            border: 1px solid rgb(43, 154, 245);
+            color: rgb(43, 154, 245);
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .month-nav-btn:hover {
+            background: rgb(43, 154, 245);
+            color: #ffffff;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 6px 12px;
+            border-radius: 20px;
+            border: 1px solid #ccc;
+            background: #f5f5f5;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-btn.active {
+            background: rgb(43, 154, 245);
+            color: #ffffff;
+            border-color: rgb(43, 154, 245);
+        }
+
+        /* Grid Design */
+        .month-title {
+            text-align: center;
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+        }
+
+        .day-label {
+            text-align: center;
+            font-weight: bold;
+            padding: 8px 0;
+            color: #555;
+            font-size: 0.9rem;
+        }
+
+        .day-cell {
+            aspect-ratio: 1 / 1;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 6px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background: #fafafa;
+            cursor: pointer;
+            transition: transform 0.1s, border-color 0.2s;
+        }
+
+        .day-cell:hover {
+            border-color: rgb(43, 154, 245);
+            transform: translateY(-2px);
+        }
+
+        .day-cell.empty {
+            background: transparent;
+            border: none;
+            cursor: default;
+        }
+
+        .day-number {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        /* Event Highlighting Colors */
+        .day-cell.has-event {
+            border-width: 2px;
+        }
+
+        .day-cell.closed {
+            background-color: #ffebee;
+            border-color: #ef5350;
+        }
+
+        .day-cell.break {
+            background-color: #e3f2fd;
+            border-color: #42a5f5;
+        }
+
+        .day-cell.quarter {
+            background-color: #e8f5e9;
+            border-color: #66bb6a;
+        }
+
+        .day-cell.report {
+            background-color: #fff3e0;
+            border-color: #ffa726;
+        }
+
+        .event-indicator {
+            height: 6px;
+            width: 100%;
+            border-radius: 3px;
+            margin-top: 2px;
+        }
+
+        .indicator-closed { background-color: #ef5350; }
+        .indicator-break { background-color: #42a5f5; }
+        .indicator-quarter { background-color: #66bb6a; }
+        .indicator-report { background-color: #ffa726; }
+
+        /* Selected Event Details Panel */
+        .event-details-card {
+            margin-top: 25px;
+            padding: 15px 20px;
+            background: #f0f8ff;
+            border: 1px solid rgb(43, 154, 245);
+            border-radius: 10px;
+        }
+
+        .event-details-card h4 {
+            margin: 0 0 5px 0;
+            color: #000000;
+        }
+
+        .event-details-card p {
+            margin: 0;
+            color: #333333;
+        }
+
+        @media (max-width: 600px) {
+            .calendar-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .month-nav-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Header -->
+<header>
+    <div class="container header-container">
+        <a href="Index.html" class="logo">
+            <img src="cms-logo.png" alt="CMS Logo" class="logo-img">
+            <span class="logo-text">CMS</span>
+        </a>
+
+        <nav>
+            <ul>
+                <li><a href="Index.html">Home</a></li>
+                <li><a href="contact.html">Contacts</a></li>
+                <li><a href="calendar.html" class="active">Calendar</a></li>
+            </ul>
+        </nav>
+
+        <div class="nav-buttons">
+            <a href="donate.html" class="btn btn-secondary">Donate</a>
+            <a href="reg.html" class="btn btn-primary">Register Request</a>
+        </div>
+    </div>
+</header>
+
+<!-- Weather Bar -->
+<div class="weather-bar">
+    <div class="container weather-container">
+        <span class="weather-location"><i class="fa-solid fa-location-dot"></i> Nashville, TN</span>
+        <span class="weather-info" id="weather-info"><i class="fa-solid fa-spinner fa-spin"></i> Loading weather...</span>
+    </div>
+</div>
+
+<!-- Calendar Section -->
+<section class="calendar-section">
+    <div class="container">
+        <div class="calendar-card">
+            <div class="calendar-header">
+                <h2><i class="fa-solid fa-calendar-days"></i> Academic Calendar 2026–2027</h2>
+                <p>Click on any highlighted date or filter by category to inspect school events and breaks.</p>
+            </div>
+
+            <!-- Controls -->
+            <div class="calendar-controls">
+                <div>
+                    <button class="month-nav-btn" onclick="prevMonth()"><i class="fa-solid fa-chevron-left"></i> Prev</button>
+                    <button class="month-nav-btn" onclick="nextMonth()">Next <i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+
+                <div class="filter-buttons">
+                    <button class="filter-btn active" onclick="filterEvents('all', this)">All</button>
+                    <button class="filter-btn" onclick="filterEvents('closed', this)">Days Off</button>
+                    <button class="filter-btn" onclick="filterEvents('break', this)">Breaks</button>
+                    <button class="filter-btn" onclick="filterEvents('quarter', this)">Quarter Dates</button>
+                    <button class="filter-btn" onclick="filterEvents('report', this)">Report Cards</button>
+                </div>
+            </div>
+
+            <div class="month-title" id="month-title">August 2026</div>
+
+            <!-- Calendar Display -->
+            <div class="calendar-grid" id="calendar-grid"></div>
+
+            <!-- Details Display Panel -->
+            <div class="event-details-card" id="event-details">
+                <h4 id="detail-title">Select a Date</h4>
+                <p id="detail-desc">Click on any date to view event details.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    // 2026-2027 Academic Calendar Dataset
+    const eventsData = {
+        "2026-08-11": { title: "First Day of School", category: "quarter", desc: "First day of school for students." },
+        "2026-09-07": { title: "Labor Day", category: "closed", desc: "School Closed." },
+        "2026-10-08": { title: "First Quarter Ends", category: "quarter", desc: "End of First Quarter." },
+        "2026-10-09": { title: "Stockpile Day", category: "closed", desc: "Students do not report." },
+        "2026-10-12": { title: "Fall Break", category: "break", desc: "Fall Break - No School." },
+        "2026-10-13": { title: "Fall Break", category: "break", desc: "Fall Break - No School." },
+        "2026-10-14": { title: "Fall Break", category: "break", desc: "Fall Break - No School." },
+        "2026-10-15": { title: "Fall Break", category: "break", desc: "Fall Break - No School." },
+        "2026-10-16": { title: "Fall Break", category: "break", desc: "Fall Break - No School." },
+        "2026-10-19": { title: "Second Quarter Begins", category: "quarter", desc: "Start of Second Quarter." },
+        "2026-10-22": { title: "Report Cards Issued", category: "report", desc: "Report cards issued for Quarter 1." },
+        "2026-11-03": { title: "Parent Conference Day", category: "closed", desc: "Students do not report." },
+        "2026-11-11": { title: "Veterans Day", category: "closed", desc: "School Closed." },
+        "2026-11-23": { title: "Thanksgiving Break", category: "break", desc: "School Closed." },
+        "2026-11-24": { title: "Thanksgiving Break", category: "break", desc: "School Closed." },
+        "2026-11-25": { title: "Thanksgiving Break", category: "break", desc: "School Closed." },
+        "2026-11-26": { title: "Thanksgiving Holiday", category: "closed", desc: "School Closed." },
+        "2026-11-27": { title: "Thanksgiving Break", category: "break", desc: "School Closed." },
+        "2026-12-21": { title: "Winter Break", category: "break", desc: "School Closed." },
+        "2026-12-22": { title: "Winter Break", category: "break", desc: "School Closed." },
+        "2026-12-23": { title: "Winter Break", category: "break", desc: "School Closed." },
+        "2026-12-24": { title: "Winter Break", category: "break", desc: "School Closed." },
+        "2026-12-25": { title: "Winter Break", category: "break", desc: "School Closed." },
+        "2026-12-28": { title: "Winter Break", category: "break", desc: "School Closed." },
+        "2026-12-29": { title: "Winter Break", category: "break", desc: "School Closed." },
+        "2026-12-30": { title: "Winter Break", category: "break", desc: "School Closed." },
+        "2026-12-31": { title: "Winter Break", category: "break", desc: "School Closed." },
+        "2027-01-01": { title: "New Year Day", category: "closed", desc: "School Closed." },
+        "2027-01-04": { title: "Stockpile Day", category: "closed", desc: "Students do not report." },
+        "2027-01-05": { title: "Third Quarter Begins", category: "quarter", desc: "Start of Third Quarter." },
+        "2027-01-18": { title: "MLK Holiday", category: "closed", desc: "School Closed." },
+        "2027-02-15": { title: "Stockpile Day", category: "closed", desc: "Students do not report." },
+        "2027-03-05": { title: "Third Quarter Ends", category: "quarter", desc: "End of Third Quarter." },
+        "2027-03-08": { title: "Fourth Quarter Begins", category: "quarter", desc: "Start of Fourth Quarter." },
+        "2027-03-18": { title: "Report Cards Issued", category: "report", desc: "Report cards issued for Quarter 3." },
+        "2027-03-22": { title: "Spring Break", category: "break", desc: "School Closed." },
+        "2027-03-23": { title: "Spring Break", category: "break", desc: "School Closed." },
+        "2027-03-24": { title: "Spring Break", category: "break", desc: "School Closed." },
+        "2027-03-25": { title: "Spring Break", category: "break", desc: "School Closed." },
+        "2027-03-26": { title: "Spring Holiday", category: "closed", desc: "School Closed." },
+        "2027-05-25": { title: "Last Day for Students / Report Cards", category: "report", desc: "Last day of school. Report cards given." }
+    };
+
+    let currentYear = 2026;
+    let currentMonth = 7; // August (0-indexed: 7)
+    let activeFilter = 'all';
+
+    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const daysOfWeek = ["S", "M", "T", "W", "T", "F", "S"];
+
+    function renderCalendar() {
+        const grid = document.getElementById('calendar-grid');
+        const title = document.getElementById('month-title');
+        grid.innerHTML = '';
+
+        title.innerText = `${monthNames[currentMonth]} ${currentYear}`;
+
+        // Header Labels
+        daysOfWeek.forEach(day => {
+            const label = document.createElement('div');
+            label.className = 'day-label';
+            label.innerText = day;
+            grid.appendChild(label);
+        });
+
+        const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+        const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+        // Empty padding cells
+        for (let i = 0; i < firstDay; i++) {
+            const emptyCell = document.createElement('div');
+            emptyCell.className = 'day-cell empty';
+            grid.appendChild(emptyCell);
+        }
+
+        // Days of Month
+        for (let day = 1; day <= daysInMonth; day++) {
+            const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+            const cell = document.createElement('div');
+            cell.className = 'day-cell';
+
+            const dayNum = document.createElement('span');
+            dayNum.className = 'day-number';
+            dayNum.innerText = day;
+            cell.appendChild(dayNum);
+
+            const event = eventsData[dateStr];
+            if (event) {
+                if (activeFilter === 'all' || activeFilter === event.category) {
+                    cell.classList.add('has-event', event.category);
+                    const indicator = document.createElement('div');
+                    indicator.className = `event-indicator indicator-${event.category}`;
+                    cell.appendChild(indicator);
+                }
+                
+                cell.onclick = () => {
+                    document.getElementById('detail-title').innerText = `${event.title} (${dateStr})`;
+                    document.getElementById('detail-desc').innerText = event.desc;
+                };
+            } else {
+                cell.onclick = () => {
+                    document.getElementById('detail-title').innerText = `Date: ${dateStr}`;
+                    document.getElementById('detail-desc').innerText = "No special events scheduled for this day.";
+                };
+            }
+
+            grid.appendChild(cell);
+        }
+    }
+
+    function prevMonth() {
+        currentMonth--;
+        if (currentMonth < 0) {
+            currentMonth = 11;
+            currentYear--;
+        }
+        renderCalendar();
+    }
+
+    function nextMonth() {
+        currentMonth++;
+        if (currentMonth > 11) {
+            currentMonth = 0;
+            currentYear++;
+        }
+        renderCalendar();
+    }
+
+    function filterEvents(category, btn) {
+        activeFilter = category;
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderCalendar();
+    }
+
+    // Weather API Script
+    async function fetchWeather() {
+        try {
+            const response = await fetch('https://api.open-meteo.com/v1/forecast?latitude=36.1659&longitude=-86.7844&current_weather=true&temperature_unit=fahrenheit');
+            const data = await response.json();
+            
+            const temp = Math.round(data.current_weather.temperature);
+            const code = data.current_weather.weathercode;
+            
+            let condition = "Clear";
+            let icon = "fa-sun";
+            
+            if (code > 0 && code <= 3) { condition = "Partly Cloudy"; icon = "fa-cloud-sun"; }
+            else if (code >= 45 && code <= 48) { condition = "Foggy"; icon = "fa-smog"; }
+            else if (code >= 51) { condition = "Rainy"; icon = "fa-cloud-rain"; }
+
+            document.getElementById('weather-info').innerHTML = `<i class="fa-solid ${icon}"></i> ${temp}°F ${condition}`;
+        } catch (err) {
+            document.getElementById('weather-info').innerHTML = `<i class="fa-solid fa-cloud"></i> Weather Unavailable`;
+        }
+    }
+
+    // Initial Load
+    renderCalendar();
+    fetchWeather();
+</script>
+
+</body>
+</html>

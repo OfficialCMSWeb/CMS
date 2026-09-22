@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support Us - CMS</title>
+    <!-- External CSS Link -->
+    <link rel="stylesheet" href="donate.css">
+    <!-- FontAwesome Icons & Google Fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header>
+        <div class="container header-container">
+            <a href="index.html" class="logo">
+                <img src="cms-logo.png" alt="CMS Logo" class="logo-img">
+                <span class="logo-text">CMS</span>
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="contact.html">Contacts</a></li>
+                    <li><a href="calendar.html">Calendar</a></li>
+                </ul>
+            </nav>
+            <div class="nav-buttons">
+                <a href="reg.html" class="btn btn-primary">Register Request</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Weather Bar -->
+    <div class="weather-bar">
+        <div class="container weather-container">
+            <span id="weather-display">
+                <i class="fa-solid fa-spinner fa-spin"></i> Loading live weather...
+            </span>
+        </div>
+    </div>
+
+    <!-- Hero Header Banner -->
+    <section class="donation-hero">
+        <div class="container">
+            <h1><i class="fa-solid fa-heart"></i> Make a Lasting Difference</h1>
+            <p>Your generosity directly funds student resources, community workshops, and essential educational programs.</p>
+        </div>
+    </section>
+
+    <!-- Main Content Layout -->
+    <section class="donation-wrapper">
+        <div class="container">
+            <div class="donation-grid">
+                
+                <!-- Left Column: Impact Breakdown -->
+                <div class="impact-card">
+                    <h3><i class="fa-solid fa-seedling"></i> Where Your Donation Goes</h3>
+                    
+                    <ul class="impact-list">
+                        <li class="impact-item">
+                            <div class="impact-icon"><i class="fa-solid fa-book-open"></i></div>
+                            <div class="impact-text">
+                                <h4>Learning Supplies & Books</h4>
+                                <p>Provides educational materials and technology tools for underprivileged students.</p>
+                            </div>
+                        </li>
+                        <li class="impact-item">
+                            <div class="impact-icon"><i class="fa-solid fa-user-graduate"></i></div>
+                            <div class="impact-text">
+                                <h4>Student Scholarships</h4>
+                                <p>Helps cover tuition and workshop entry fees for deserving individuals.</p>
+                            </div>
+                        </li>
+                        <li class="impact-item">
+                            <div class="impact-icon"><i class="fa-solid fa-people-group"></i></div>
+                            <div class="impact-text">
+                                <h4>Community Workshops</h4>
+                                <p>Sponsors free public learning events and mentorship programs year-round.</p>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <div class="trust-banner">
+                        <div class="trust-item"><i class="fa-solid fa-shield-halved"></i> 100% Secure</div>
+                        <div class="trust-item"><i class="fa-solid fa-lock"></i> SSL Encrypted</div>
+                        <div class="trust-item"><i class="fa-solid fa-certificate"></i> Verified Charity</div>
+                    </div>
+                </div>
+
+                <!-- Right Column: PayPal Donation Form -->
+                <div class="register-container">
+                    <div class="register-header">
+                        <h2><i class="fa-solid fa-hand-holding-dollar"></i> Support Our Cause</h2>
+                        <p>Select an amount or enter a custom contribution below.</p>
+                    </div>
+
+                    <!-- Form Action targeting PayPal -->
+                    <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
+                        
+                        <!-- Required PayPal Hidden Fields -->
+                        <input type="hidden" name="cmd" value="_donations">
+                        <input type="hidden" name="business" value="claramohammedschools@gmail.com">
+                        <input type="hidden" name="item_name" value="Community & Education Donation">
+                        <input type="hidden" name="currency_code" value="USD">
+
+                        <!-- Preset Buttons -->
+                        <label class="donation-label">Choose Giving Level</label>
+                        <div class="donation-presets">
+                            <button type="button" class="preset-btn" onclick="setAmount(10, this)">$10</button>
+                            <button type="button" class="preset-btn" onclick="setAmount(25, this)">$25</button>
+                            <button type="button" class="preset-btn active" onclick="setAmount(50, this)">$50</button>
+                            <button type="button" class="preset-btn" onclick="setAmount(100, this)">$100</button>
+                        </div>
+
+                        <!-- Custom Amount Field -->
+                        <div class="form-group">
+                            <label for="donation-amount">Or Enter Custom Amount ($ USD)</label>
+                            <div class="input-wrapper">
+                                <span class="currency-symbol">$</span>
+                                <input type="number" id="donation-amount" name="amount" value="50" min="1" step="any" required placeholder="50.00">
+                            </div>
+                        </div>
+
+                        <!-- PayPal Submit Button -->
+                        <button type="submit" class="btn btn-primary btn-submit">
+                            <i class="fa-brands fa-paypal"></i> Donate with PayPal
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Scripts -->
+    <script>
+        // Preset Donation Selection
+        function setAmount(val, elem) {
+            document.getElementById('donation-amount').value = val;
+            
+            const buttons = document.querySelectorAll('.preset-btn');
+            buttons.forEach(b => b.classList.remove('active'));
+            elem.classList.add('active');
+        }
+
+        // Map Weather API WMO Codes to FontAwesome Icons
+        function getWeatherIcon(code) {
+            if (code === 0) return 'fa-sun';
+            if (code >= 1 && code <= 3) return 'fa-cloud-sun';
+            if (code >= 45 && code <= 48) return 'fa-smog';
+            if (code >= 51 && code <= 67) return 'fa-cloud-rain';
+            if (code >= 71 && code <= 77) return 'fa-snowflake';
+            if (code >= 95) return 'fa-cloud-bolt';
+            return 'fa-cloud';
+        }
+
+        // Fetch Live Weather Updates
+        async function fetchLiveWeather() {
+            // Coordinates set for Nashville, TN
+            const url = 'https://api.open-meteo.com/v1/forecast?latitude=36.1627&longitude=-86.7816&current_weather=true&temperature_unit=fahrenheit';
+
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+
+                if (data.current_weather) {
+                    const temp = Math.round(data.current_weather.temperature);
+                    const code = data.current_weather.weathercode;
+                    const iconClass = getWeatherIcon(code);
+
+                    const weatherContainer = document.getElementById('weather-display');
+                    if (weatherContainer) {
+                        weatherContainer.innerHTML = `<i class="fa-solid ${iconClass}"></i> Nashville, TN | ${temp}°F`;
+                    }
+                }
+            } catch (error) {
+                console.error("Error fetching live weather data:", error);
+                document.getElementById('weather-display').innerHTML = `<i class="fa-solid fa-cloud-sun"></i> Nashville, TN`;
+            }
+        }
+
+        // Initialize weather and refresh every 10 minutes
+        fetchLiveWeather();
+        setInterval(fetchLiveWeather, 600000);
+    </script>
+</body>
+</html> 

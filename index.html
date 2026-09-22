@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMS</title>
+
+    <!-- Font Awesome CDN --> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">   
+
+    <!-- Link to CSS File --> 
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- Header -->
+<header>
+    <div class="container header-container">
+       <a href="Index.html" class="logo">
+    <img src="cms-logo.png" alt="CMS Logo" class="logo-img">
+    <div class="logo-text">CMS</div>
+</a>
+
+        <nav>
+            <ul>
+                <li><a href="Index.html">Home</a></li>
+                <li><a href="contact.html">Contacts</a></li>
+                <li><a href="calendar.html">Calendar</a></li>
+            </ul>
+        </nav>
+
+        <div class="nav-buttons">
+            <a href="donate.html" class="btn btn-secondary">Donate</a>
+            <a href="reg.html" class="btn btn-primary">Register Request</a>
+        </div>
+    </div>
+</header>
+
+<!-- Weather Bar -->
+<div class="weather-bar">
+    <div class="container weather-container">
+        <span class="weather-location"><i class="fa-solid fa-location-dot"></i> Nashville, TN</span>
+        <span class="weather-info" id="weather-info"><i class="fa-solid fa-spinner fa-spin"></i> Loading weather...</span>
+    </div>
+</div>
+
+<section class="hero">
+    <!-- Watermark div placed right inside the hero section -->
+    <div class="hero-bg-watermark"></div>
+
+    <div class="container hero-wrapper centered">
+        <div class="hero-content">
+            <div class="hero-subtitle">
+                <i class="fa-solid fa-city"></i>
+                3620 Buena Vista Pike Nashville, TN
+            </div>
+            <h1 class="hero-title">Clara Mohummed School<br><span>Register a student or book a meeting</span></h1>
+            <p class="hero-text">فَخُذْ أَرْبَعَةً مِّنَ الطَّيْرِ فَصُرْهُنَّ إِلَيْكَ ... ثُمَّ ادْعُهُنَّ يَأْتِينَكَ سَعْيًا</p>
+            <p class="hero-text">"Then bring four birds, train them to come to you, then cut them into pieces, and scatter them on different hilltops. Then call them back, they will fly to you in haste." [cite: 1.1.2]</p>
+            <div class="hero-button">
+                <a href="reg.html" class="btn btn-primary">Register New Student</a>
+                <a href="meeting.html" class="btn btn-secondary">Schedule a Meeting</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Graduation & School Highlights Section -->
+<section class="graduation-section">
+    <div class="container">
+        <h2 class="section-title">Graduation & Excellence</h2>
+        <div class="grad-grid">
+            
+            <!-- Card 1: 100% Graduation Rate (IMG_4637.jpeg) -->
+            <div class="grad-card">
+                <div class="grad-img-wrapper">
+                    <img src="IMG_4637.jpeg" alt="100% Graduation Rate">
+                </div>
+                <div class="grad-card-body">
+                    <h3>100% Graduation Rate</h3>
+                    <p>For 55 consecutive years, Clara Muhammad School has maintained a 100% graduation rate, with over 90% of alumni advancing to college. Building on a decades-long legacy of shaping Nashville community leaders, our graduates now pioneer and innovate at the forefront of STEM industries nationwide.</p>
+                </div>
+            </div>
+
+            <!-- Card 2: Rigorous Curriculum (00EC2F21-A849-4932-A83C-9026EC343AD1.jpg) -->
+            <div class="grad-card">
+                <div class="grad-img-wrapper">
+                    <img src="00EC2F21-A849-4932-A83C-9026EC343AD1.jpeg" alt="Rigorous Curriculum">
+                </div>
+                <div class="grad-card-body">
+                    <h3>Rigorous Curriculum</h3>
+                    <p>At Clara Muhammad School, students push past standard limits by mastering accelerated, above-grade-level academics. This rigor is paired with a foundational Islamic education rooted in the teachings of Islam and the life of Prophet Muhammad (peace be upon him).</p>
+                </div>
+            </div>
+
+            <!-- Card 3: Future Leaders (IMG_4633.jpg) -->
+            <div class="grad-card">
+                <div class="grad-img-wrapper">
+                    <img src="IMG_4633.jpeg" alt="Future Leaders">
+                </div>
+                <div class="grad-card-body">
+                    <h3>Future Leaders</h3>
+                    <p>Clara Muhammad School has a rich legacy of cultivating civic and community leaders in Nashville. Today, that tradition extends into STEM, where alumni drive industry innovation and shape the future of their fields.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- Honorable Mentions & Alumni Section -->
+<section id="honors-alumni" class="honors-section">
+    <div class="container">
+        <h2 class="section-title">Honorable Mentions & Alumni</h2>
+        
+        <div class="cards-grid">
+            <a href="HM.html" target="_blank" rel="noopener noreferrer" class="card">
+                <i class="fa-solid fa-award card-icon"></i>
+                <h3>Honorable Mentions</h3>
+                <p>Recognizing outstanding achievements, leadership, and contributions within our school community. Take a look and write a thank you message</p>
+            </a>
+
+            <a href="Alumni.html" target="_blank" rel="noopener noreferrer" class="card">
+                <i class="fa-solid fa-user-graduate card-icon"></i>
+                <h3>Alumni Network</h3>
+                <p>Celebrating the successes of Clara Muhammad School graduates making an impact everywhere. Take a look and connect with your fellow CMS alumni</p>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Live Weather Fetch Script -->
+<script>
+    async function fetchWeather() {
+        try {
+            const response = await fetch('https://api.open-meteo.com/v1/forecast?latitude=36.1659&longitude=-86.7844&current_weather=true&temperature_unit=fahrenheit');
+            const data = await response.json();
+            
+            const temp = Math.round(data.current_weather.temperature);
+            const code = data.current_weather.weathercode;
+            
+            let condition = "Clear";
+            let icon = "fa-sun";
+            
+            if (code > 0 && code <= 3) {
+                condition = "Partly Cloudy";
+                icon = "fa-cloud-sun";
+            } else if (code >= 45 && code <= 48) {
+                condition = "Foggy";
+                icon = "fa-smog";
+            } else if (code >= 51) {
+                condition = "Rainy";
+                icon = "fa-cloud-rain";
+            }
+
+            document.getElementById('weather-info').innerHTML = `<i class="fa-solid ${icon}"></i> ${temp}°F ${condition}`;
+        } catch (err) {
+            document.getElementById('weather-info').innerHTML = `<i class="fa-solid fa-cloud"></i> Weather Unavailable`;
+        }
+    }
+
+    fetchWeather();
+</script>
+
+</body>
+</html>
